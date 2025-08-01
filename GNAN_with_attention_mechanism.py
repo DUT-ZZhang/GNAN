@@ -41,7 +41,7 @@ class TensorDataset(Data.Dataset):
         return self.data_tensor[index]
 
     def __len__(self):
-        return self.data_tensor.size(0)  # size(0) 返回当前张量维数的第一维
+        return self.data_tensor.size(0)  
 
 class AttentionLayer(nn.Module):
     def __init__(self, input_size, hidden_size):
@@ -53,19 +53,13 @@ class AttentionLayer(nn.Module):
         self.activation = nn.ReLU()
 
     def forward(self, x):
-        # 假设 x 是 (batch_size, input_size)
-        # 我们需要添加一个序列维度，这里我们简单地复制输入来模拟序列
-        # 注意：这在实际应用中是没有意义的
         print(x)
-        seq_len = x.size(1)  # 但实际上我们并没有真正的序列长度
+        seq_len = x.size(1)  
         print(seq_len)
         x = x.unsqueeze(1).repeat(1, seq_len, 1)  # (batch_size, seq_len, input_size)
         x = self.fc(x)
         attn_output, attn_output_weights = self.attention(x, x, x)
-        # 注意：attn_output 现在是 (batch_size, seq_len, hidden_size)
-        # 但我们可能需要将其转换回 (batch_size, hidden_size)
-        # 这里我们简单地取最后一个时间步的输出（或平均、求和等）
-        output = attn_output[:, -1, :]  # 取最后一个时间步
+        output = attn_output[:, -1, :] 
         output = self.activation(output)
         return output
 
